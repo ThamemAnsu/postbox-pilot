@@ -20,11 +20,19 @@ const Login = () => {
     setIsLoading(true);
 
     try {
+      console.log('Login attempt:', { email });
       await login(email, password);
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', error.response?.data);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error ||
+                          error.response?.data?.detail ||
+                          error.response?.data?.errors?.[0]?.msg ||
+                          error.message ||
+                          'Login failed. Please check your credentials and try again.';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
