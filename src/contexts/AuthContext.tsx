@@ -50,7 +50,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (email: string, password: string) => {
+    console.log('Sending registration request to:', '/api/auth/register');
     const response = await api.post('/api/auth/register', { email, password });
+    console.log('Registration response:', response.data);
     const { token: newToken } = response.data;
     localStorage.setItem('token', newToken);
     setToken(newToken);

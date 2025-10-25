@@ -32,11 +32,17 @@ const Register = () => {
     setIsLoading(true);
 
     try {
+      console.log('Registration attempt:', { email, passwordLength: password.length });
       await register(email, password);
       toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Registration error:', error.response?.data);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error ||
+                          error.response?.data?.errors?.[0]?.msg ||
+                          'Registration failed. Please check your inputs and try again.';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
